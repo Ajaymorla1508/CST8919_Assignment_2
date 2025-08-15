@@ -291,8 +291,7 @@ The analysis focuses on:
 
 ---
 
-## 4. Conclusion
-This expanded comparison covers **10 services** instead of the base 5, reflecting both course material and additional lab work.  
+## 4. Conclusion 
 Across Azure, AWS, and GCP, equivalent capabilities exist for:
 - Identity & access management  
 - Monitoring & logging  
