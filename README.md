@@ -8,176 +8,303 @@
 ---
 
 ## 1. Introduction
-This report compares the Microsoft Azure services used in CST8919 with equivalent offerings in **Amazon Web Services (AWS)** and **Google Cloud Platform (GCP)**. The analysis focuses on features, security and compliance capabilities, pricing models, and integration potential for DevSecOps practices.  
+This report compares Microsoft Azure services used in CST8919 with equivalent services in **Amazon Web Services (AWS)** and **Google Cloud Platform (GCP)**.  
+It covers both the **core 5 services** required by the professor and **additional services we implemented in labs**, providing a broader cross-cloud mapping.
 
-The goal is to understand cross-cloud capabilities and prepare for multi-cloud or cloud migration scenarios in a DevSecOps environment.
+The analysis focuses on:
+- Service overviews
+- Core features
+- Security & compliance
+- Pricing models
+- Integration with DevSecOps pipelines
 
 ---
 
 ## 2. Quick Comparison Table
 
-| Azure Service | AWS Equivalent | GCP Equivalent |
-|---------------|---------------|----------------|
-| **Azure Active Directory** (SSO, IAM) | AWS IAM + AWS IAM Identity Center (formerly AWS SSO) | Google Cloud Identity + IAM |
-| **Azure Monitor & Log Analytics** | Amazon CloudWatch + AWS CloudTrail | Google Cloud Operations Suite (Stackdriver) |
-| **Azure Policy** | AWS Organizations + Service Control Policies (SCP) | Google Organization Policy Service |
-| **Defender for Cloud** | AWS Security Hub + AWS GuardDuty | Google Security Command Center (SCC) |
-| **Azure Sentinel** (SIEM/SOAR) | Amazon Security Lake + Amazon Detective + AWS GuardDuty | Chronicle Security Operations |
+| # | Azure Service | AWS Equivalent | GCP Equivalent |
+|---|---------------|---------------|----------------|
+| 1 | Azure Active Directory (SSO, IAM) | AWS IAM + IAM Identity Center (AWS SSO) | Google Cloud Identity + IAM |
+| 2 | Azure Monitor & Log Analytics | Amazon CloudWatch + AWS CloudTrail | Google Cloud Operations Suite (Stackdriver) |
+| 3 | Azure Policy | AWS Organizations + Service Control Policies (SCP) | Google Organization Policy Service |
+| 4 | Defender for Cloud | AWS Security Hub + GuardDuty | Google Security Command Center (SCC) |
+| 5 | Azure Sentinel (SIEM/SOAR) | Amazon Security Lake + Amazon Detective + GuardDuty | Chronicle Security Operations |
+| 6 | Auth0 (as used in Flask App) | AWS Cognito | Google Identity Platform |
+| 7 | Azure App Service | AWS Elastic Beanstalk | Google App Engine |
+| 8 | Azure Alerts (Monitor + KQL) | AWS CloudWatch Alarms | Google Cloud Monitoring Alerts |
+| 9 | Azure Diagnostic Settings & Activity Logs | AWS CloudTrail | Google Cloud Audit Logs |
+| 10 | Azure Tagging & Resource Governance | AWS Resource Tagging + Tag Policies | GCP Labels + Organization Policy |
 
 ---
 
 ## 3. Detailed Comparisons
 
+---
+
 ### 3.1 Azure Active Directory (SSO, IAM)
-**AWS Equivalent:** AWS IAM + AWS IAM Identity Center  
+**AWS Equivalent:** AWS IAM + IAM Identity Center  
 **GCP Equivalent:** Google Cloud Identity + IAM  
 
 #### Overview
-- **Azure Active Directory (Azure AD):** Cloud-based identity and access management service supporting SSO, MFA, conditional access, and integration with Microsoft 365 and thousands of SaaS apps.  
-- **AWS IAM + IAM Identity Center:** IAM controls AWS resource permissions; Identity Center provides SSO, MFA, and access to multiple AWS accounts and apps.  
-- **Google Cloud Identity + IAM:** Directory service with SSO, MFA, user lifecycle management, and granular IAM for GCP resources.
+- **Azure AD:** Identity & access management, SSO, MFA, conditional access.  
+- **AWS IAM + Identity Center:** Role-based access, SSO across AWS accounts and apps.  
+- **GCP Cloud Identity + IAM:** Directory services with SSO and granular IAM.
 
 #### Core Features
-- **Azure AD:** SSO, MFA, conditional access, role-based access control (RBAC), identity protection.  
-- **AWS IAM & Identity Center:** Fine-grained permissions, SSO, MFA, federated access, AWS CLI/SDK integration.  
-- **GCP Cloud Identity & IAM:** SSO, MFA, security keys, service accounts, hierarchical access control.
+- User & group management  
+- Role-based access control (RBAC)  
+- SAML, OAuth2, OIDC support  
+- MFA & conditional access
 
 #### Security & Compliance
-- **Azure AD:** ISO 27001, SOC 1/2/3, FedRAMP High, HIPAA, GDPR.  
-- **AWS IAM:** SOC 1/2/3, ISO 27001, FedRAMP, HIPAA.  
-- **GCP IAM:** ISO 27001, SOC 1/2/3, FedRAMP, HIPAA, GDPR.
+- ISO 27001, SOC 1/2/3, FedRAMP, HIPAA, GDPR across all three.
 
-#### Pricing Model
-- **Azure AD:** Free tier; Premium P1 ($6/user/month), Premium P2 ($9/user/month).  
-- **AWS IAM:** Free; pay for advanced features like MFA with SMS and linked services.  
-- **GCP IAM:** Free; Cloud Identity Premium $6/user/month.
+#### Pricing
+- Azure AD Free + Premium P1/P2 per user/month  
+- AWS IAM free; Identity Center free, pay for linked services  
+- GCP Cloud Identity free tier + premium per user/month
 
 #### DevSecOps Integration
-- CI/CD access control (GitHub Actions, Jenkins, Azure DevOps, etc.).  
-- Automated role assignment through IaC tools (Terraform, CloudFormation, Deployment Manager).  
-- Supports least privilege principles and policy enforcement in pipelines.
+- Access control in CI/CD  
+- Automatable via Terraform, CloudFormation, Deployment Manager
 
 ---
 
 ### 3.2 Azure Monitor & Log Analytics
 **AWS Equivalent:** Amazon CloudWatch + AWS CloudTrail  
-**GCP Equivalent:** Google Cloud Operations Suite (formerly Stackdriver)  
+**GCP Equivalent:** Google Cloud Operations Suite  
 
 #### Overview
-- **Azure Monitor & Log Analytics:** End-to-end observability and logging platform, queryable via Kusto Query Language (KQL).  
-- **Amazon CloudWatch & CloudTrail:** CloudWatch monitors metrics/logs; CloudTrail records AWS API calls and account activity.  
-- **Google Cloud Operations Suite:** Logging, monitoring, and alerting for GCP resources and workloads.
+- Azure Monitor collects metrics, Log Analytics queries logs with KQL.  
+- AWS CloudWatch for metrics/logs, CloudTrail for API audit logs.  
+- GCP Operations Suite integrates monitoring/logging/alerting.
 
 #### Core Features
-- Metrics collection and dashboards.  
-- Log aggregation and search.  
-- Alerts and automated actions.  
-- Application performance monitoring (APM).  
-- API and CLI support for automation.
+- Metrics dashboards  
+- Log aggregation & search  
+- Alerts & automated actions  
+- APM integration
 
 #### Security & Compliance
-All three services comply with ISO 27001, SOC, FedRAMP, and HIPAA (when configured).
+- SOC, ISO, FedRAMP, HIPAA on all three.
 
-#### Pricing Model
-- **Azure Monitor:** Pay-per-GB ingested and retention; custom metrics billed separately.  
-- **AWS CloudWatch:** Pay per metric, dashboard, and GB of logs; CloudTrail basic is free (90-day history).  
-- **GCP Operations Suite:** Pay per GB of logs and metrics beyond free tier.
+#### Pricing
+- Pay-per-GB ingested and retention period.
 
 #### DevSecOps Integration
-- Trigger security workflows based on alerts.  
-- Integrates with SIEM/SOAR tools (e.g., Sentinel, Splunk).  
-- API hooks for automated incident response.
+- Trigger workflows from alerts  
+- Integrated with SIEM/SOAR like Sentinel or Splunk
 
 ---
 
 ### 3.3 Azure Policy
-**AWS Equivalent:** AWS Organizations + Service Control Policies (SCP)  
-**GCP Equivalent:** Google Organization Policy Service  
+**AWS Equivalent:** AWS Organizations + SCP  
+**GCP Equivalent:** Organization Policy Service  
 
 #### Overview
-- **Azure Policy:** Enforces compliance by defining rules (policy definitions) applied to subscriptions/resource groups.  
-- **AWS Organizations + SCP:** Central management of multiple AWS accounts with guardrails to limit allowed actions.  
-- **Google Organization Policy Service:** Sets constraints at the organization, folder, or project level to enforce security and compliance.
+- Azure Policy enforces compliance (e.g., restrict regions, require tags).  
+- AWS SCP sets guardrails for accounts.  
+- GCP Org Policy defines constraints.
 
 #### Core Features
-- Policy-as-code.  
-- Deny/modify non-compliant resources.  
-- Compliance dashboard and remediation.  
-- Scope-based application (Org → Project/RG → Resource).
+- Policy-as-code  
+- Deny/modify non-compliant resources  
+- Compliance dashboards
 
 #### Security & Compliance
-Supports CIS Benchmarks, ISO, SOC, FedRAMP, HIPAA across all clouds when policies match compliance baselines.
+- Supports CIS, ISO, SOC, FedRAMP baselines.
 
-#### Pricing Model
-- All three services: No direct charge; costs may apply for remediation actions or linked services.
+#### Pricing
+- No direct charge; costs may arise from remediation actions.
 
 #### DevSecOps Integration
-- Automate policy deployment with Terraform/ARM/CloudFormation.  
-- Integrate compliance checks into CI/CD pipelines.  
-- Enable auto-remediation scripts.
+- Compliance checks in pipelines  
+- Automated policy deployment via IaC
 
 ---
 
 ### 3.4 Defender for Cloud
-**AWS Equivalent:** AWS Security Hub + AWS GuardDuty  
-**GCP Equivalent:** Google Security Command Center (SCC)  
+**AWS Equivalent:** AWS Security Hub + GuardDuty  
+**GCP Equivalent:** Security Command Center  
 
 #### Overview
-- **Defender for Cloud:** CSPM and workload protection platform for Azure, hybrid, and multi-cloud environments.  
-- **AWS Security Hub + GuardDuty:** Security Hub aggregates findings from AWS and partner tools; GuardDuty detects threats using ML and threat intelligence.  
-- **GCP SCC:** Centralized security risk assessment and threat detection across GCP.
+- CSPM + threat protection for Azure, hybrid, and multi-cloud.  
+- AWS Security Hub aggregates findings; GuardDuty detects threats.  
+- GCP SCC scans for misconfigurations and threats.
 
 #### Core Features
-- Posture management and compliance reporting.  
-- Threat detection and alerting.  
-- Integration with SIEM/SOAR tools.  
-- Recommendations for remediation.
+- Compliance posture  
+- Threat alerts  
+- Remediation recommendations
 
 #### Security & Compliance
-Covers CIS, PCI DSS, HIPAA, ISO 27001, SOC, and FedRAMP standards.
+- PCI DSS, HIPAA, ISO, SOC, FedRAMP.
 
-#### Pricing Model
-- **Defender for Cloud:** Free tier for CSPM; per-resource pricing for advanced protection.  
-- **AWS Security Hub:** Charged per finding and compliance check; GuardDuty billed per GB analyzed.  
-- **GCP SCC:** Tiered pricing; per-asset and per-event charges.
+#### Pricing
+- Defender for Cloud: Free CSPM tier; paid per-resource protection.
 
 #### DevSecOps Integration
-- Continuous compliance checks in pipelines.  
-- API-based integration for automated remediation.  
-- Alerts to messaging platforms (Slack, Teams).
+- Continuous scans & alerts integrated into workflows
 
 ---
 
 ### 3.5 Azure Sentinel (SIEM/SOAR)
-**AWS Equivalent:** Amazon Security Lake + Amazon Detective + AWS GuardDuty  
-**GCP Equivalent:** Chronicle Security Operations  
+**AWS Equivalent:** Security Lake + Detective + GuardDuty  
+**GCP Equivalent:** Chronicle Security Ops  
 
 #### Overview
-- **Azure Sentinel:** Cloud-native SIEM/SOAR for threat detection, investigation, and automated response.  
-- **Amazon Security Lake + Detective + GuardDuty:** Aggregates and analyzes security data; provides investigation tools and threat detection.  
-- **GCP Chronicle Security Ops:** SIEM and SOAR platform with Google-scale analytics.
+- Azure Sentinel ingests logs, detects threats, and automates response.  
+- AWS Security Lake centralizes logs; Detective investigates; GuardDuty detects.  
+- Chronicle provides Google-scale SIEM & SOAR.
 
 #### Core Features
-- Ingest data from multiple sources.  
-- Real-time threat detection.  
-- Playbooks for automated response.  
-- AI-driven investigation.
+- Real-time threat detection  
+- Playbook automation  
+- Multi-source log ingestion
 
-#### Security & Compliance
-All comply with ISO 27001, SOC, FedRAMP, HIPAA when configured.
-
-#### Pricing Model
-- **Sentinel:** Pay-as-you-go for ingested data; commitment tiers for discount.  
-- **AWS:** Pay per GB stored/processed; Detective and GuardDuty billed separately.  
-- **GCP Chronicle:** Per GB/month pricing; tiered based on retention.
+#### Pricing
+- Pay-as-you-go per GB ingested.
 
 #### DevSecOps Integration
-- Automated incident response workflows.  
-- Integration with ticketing systems (Jira, ServiceNow).  
-- Supports custom SOAR playbooks.
+- Automated incident response playbooks  
+- Integration with ServiceNow, Jira
+
+---
+
+### 3.6 Auth0 (SSO for Flask App)
+**AWS Equivalent:** AWS Cognito  
+**GCP Equivalent:** Google Identity Platform  
+
+#### Overview
+- **Auth0** used in Flask lab for secure login with OIDC.  
+- AWS Cognito handles auth & federation.  
+- GCP Identity Platform offers similar auth services.
+
+#### Core Features
+- OIDC, OAuth2, SAML support  
+- MFA, social logins  
+- JWT token-based sessions
+
+#### Pricing
+- Auth0: Free tier + paid per active user  
+- AWS Cognito: Monthly active users + data storage  
+- GCP: Pay per MAU
+
+#### DevSecOps Integration
+- Secures access to app pipelines  
+- Integration with CI/CD auth flows
+
+---
+
+### 3.7 Azure App Service
+**AWS Equivalent:** AWS Elastic Beanstalk  
+**GCP Equivalent:** Google App Engine  
+
+#### Overview
+- Azure App Service hosts Flask web app in lab.  
+- AWS Beanstalk deploys apps without managing servers.  
+- GCP App Engine provides serverless app hosting.
+
+#### Core Features
+- Auto-scaling  
+- CI/CD integration  
+- Language/runtime support
+
+#### Pricing
+- Pay for compute instance size + usage.
+
+#### DevSecOps Integration
+- Deploy from GitHub Actions  
+- Integration with monitoring & alerts
+
+---
+
+### 3.8 Azure Alerts (Monitor + KQL)
+**AWS Equivalent:** CloudWatch Alarms  
+**GCP Equivalent:** Cloud Monitoring Alerts  
+
+#### Overview
+- Azure Alerts trigger actions based on KQL queries in Monitor.  
+- AWS CloudWatch Alarms monitor metrics & logs.  
+- GCP Alerts work within Monitoring.
+
+#### Core Features
+- Metric & log-based triggers  
+- Multi-channel notifications  
+- Auto-remediation hooks
+
+#### Pricing
+- Pay per alert rule & notifications beyond free tier.
+
+#### DevSecOps Integration
+- Automated incident tickets  
+- Trigger Lambda/Functions for remediation
+
+---
+
+### 3.9 Azure Diagnostic Settings & Activity Logs
+**AWS Equivalent:** AWS CloudTrail  
+**GCP Equivalent:** Cloud Audit Logs  
+
+#### Overview
+- Diagnostic Settings forward logs to Log Analytics, Event Hub, or Storage.  
+- AWS CloudTrail records account activity.  
+- GCP Cloud Audit Logs track admin & data access events.
+
+#### Core Features
+- Governance & auditing  
+- Long-term storage  
+- Query & alerting integration
+
+#### Security & Compliance
+- Essential for compliance audits.
+
+#### Pricing
+- Pay for log storage & queries.
+
+#### DevSecOps Integration
+- Used in security investigations  
+- Integrated with SIEM/SOAR
+
+---
+
+### 3.10 Azure Tagging & Resource Governance
+**AWS Equivalent:** Resource Tagging + Tag Policies  
+**GCP Equivalent:** Labels + Org Policy  
+
+#### Overview
+- Lab enforced ProjectName tag using Azure Policy.  
+- AWS Tag Policies enforce consistent tagging.  
+- GCP Labels used for cost tracking & governance.
+
+#### Core Features
+- Metadata for resources  
+- Cost allocation  
+- Policy enforcement
+
+#### Pricing
+- Free; cost only for enforcement tooling.
+
+#### DevSecOps Integration
+- Automate tagging in IaC  
+- Tag-based cost & compliance reports
 
 ---
 
 ## 4. Conclusion
-This comparison highlights that while Azure, AWS, and GCP offer similar core security and compliance capabilities, naming conventions, integration depth, and pricing models differ. For DevSecOps workflows, each platform supports automation, CI/CD integration, and compliance enforcement, but the choice often depends on existing ecosystem investments and organizational expertise.
+This expanded comparison covers **10 services** instead of the base 5, reflecting both course material and additional lab work.  
+Across Azure, AWS, and GCP, equivalent capabilities exist for:
+- Identity & access management  
+- Monitoring & logging  
+- Policy enforcement & governance  
+- Threat detection & response  
+- Application hosting & alerting  
 
+For DevSecOps, all platforms provide:
+- API access for automation  
+- CI/CD integration  
+- Compliance frameworks
+
+However, differences in pricing, naming conventions, and integration depth mean that **choosing a provider** depends on existing infrastructure, team expertise, and compliance needs.
+
+---
